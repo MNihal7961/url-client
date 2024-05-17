@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const AddUrl = () => {
+  const { currentUser, token } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     originalLink: "",
@@ -18,10 +19,6 @@ const AddUrl = () => {
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  const { currentUser } = useSelector((state) => state.user);
-
-  axios.defaults.withCredentials = true;
 
   const result = async (event) => {
     event.preventDefault();
@@ -43,10 +40,16 @@ const AddUrl = () => {
     }
 
     try {
+      axios.defaults.withCredentials = true;
       const { data } = await axios.post(
-        "http://localhost:4000/api/url",
+        "https://url-server-git-main-nihalms-projects.vercel.app/api/url",
         formData,
-        { withCredentials: true }
+        {
+          headers: {
+            Authorization: token,
+          },
+          withCredentials: true,
+        }
       );
 
       setLoading(false);
@@ -104,6 +107,7 @@ const AddUrl = () => {
           </div>
           <div className="mt-7">
             <button
+              disabled={loading}
               className="w-full bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3"
               type="submit"
             >

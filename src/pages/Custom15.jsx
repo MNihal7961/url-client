@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import Loading from "../components/Loading";
 import Empty from "../components/Empty";
 
-const Custom15 = () => {
+const MyUrls = () => {
   const { token } = useSelector((state) => state.user);
   const [urls, setUrls] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -141,4 +141,4 @@ const Custom15 = () => {
   );
 };
 
-export default Custom15;
+export default MyUrls;

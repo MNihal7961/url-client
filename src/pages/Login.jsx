@@ -32,6 +32,7 @@ const Login = () => {
     }
 
     try {
+      axios.defaults.withCredentials = true;
       dispatch(logInStart());
       const res = await axios.post(
         "https://url-server-git-main-nihalms-projects.vercel.app/api/user/login",
@@ -71,6 +72,15 @@ const Login = () => {
         <h3 className="text-headingColor text-[22px] leading-9 font-bold mb-10">
           Hello! <span className="text-primaryColor">Welcome</span> Back 🖐️
         </h3>
+        <h2 className="text-headingColor text-[22px] leading-9 font-bold mb-10 underline">
+          Sample user
+        </h2>
+        <h5 className="text-headingColor text-[22px] leading-9 font-bold">
+          Email: test@gmail.com
+        </h5>
+        <h5 className="text-headingColor text-[22px] leading-9 font-bold mb-10">
+          Password: 123456
+        </h5>
         <form className="py-4 md:py-0 " onSubmit={handleSubmit}>
           <div className="mb-5">
             <input
@@ -94,6 +104,7 @@ const Login = () => {
           </div>
           <div className="mt-7">
             <button
+              disabled={loading}
               className="w-full bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3"
               type="submit"
             >
