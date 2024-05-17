@@ -40,7 +40,7 @@ const Signup = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/user/signup",
+        "https://url-server-git-main-nihalms-projects.vercel.app/api/user/signup",
         formData,
         {
           headers: {

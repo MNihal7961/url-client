@@ -20,11 +20,15 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      axios.get("http://localhost:4000/api/user/logout").then(() => {
-        dispatch(signOut());
-        navigate("/login");
-        toast.success("Logout Success");
-      });
+      axios
+        .get(
+          "https://url-server-git-main-nihalms-projects.vercel.app/api/user/logout"
+        )
+        .then(() => {
+          dispatch(signOut());
+          navigate("/login");
+          toast.success("Logout Success");
+        });
     } catch (err) {
       toast.error(err.response.data.message);
     }
