@@ -17,7 +17,7 @@ const Header = () => {
     { name: "CUSTOM 15", link: "/custom" },
   ];
   let [open, setOpen] = useState(false);
-  const { currentUser ,token} = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
   axios.defaults.withCredentials = true;
   const handleLogout = async () => {
     try {

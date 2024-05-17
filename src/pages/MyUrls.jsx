@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { MdDelete } from "react-icons/md";
 import { toast } from "react-toastify";
@@ -6,10 +6,11 @@ import { useSelector } from "react-redux";
 import Loading from "../components/Loading";
 import Empty from "../components/Empty";
 
-const Custom15 = () => {
+const MyUrls = () => {
   const { token } = useSelector((state) => state.user);
   const [urls, setUrls] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   axios.defaults.withCredentials = true;
 
@@ -25,9 +26,7 @@ const Custom15 = () => {
           withCredentials: true,
         }
       );
-      if (response) {
-        setLoading(false);
-      }
+      setLoading(false);
       setUrls(response.data.data.urls);
     } catch (error) {
       setLoading(false);
@@ -38,6 +37,13 @@ const Custom15 = () => {
   useEffect(() => {
     fetchUrls();
   }, []);
+
+  const itemsPerPage = 5;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = urls.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const insertLineBreaks = (url) => {
     const chunks = [];
@@ -106,7 +112,7 @@ const Custom15 = () => {
               </tr>
             </thead>
             <tbody>
-              {urls.map((url, index) => (
+              {currentItems.map((url, index) => (
                 <tr key={index}>
                   <td className="px-6 py-4">{index + 1}</td>
                   <td className="px-6 py-4">{url.name || "NA"}</td>
@@ -135,10 +141,28 @@ const Custom15 = () => {
               ))}
             </tbody>
           </table>
+          <div className="flex justify-center mt-4">
+            {Array.from(
+              { length: Math.ceil(urls.length / itemsPerPage) },
+              (_, i) => (
+                <button
+                  key={i}
+                  onClick={() => paginate(i + 1)}
+                  className={`px-3 py-1 mx-1 text-sm font-semibold rounded-full ${
+                    currentPage === i + 1
+                      ? "bg-gray-700 text-white"
+                      : "bg-gray-200 text-gray-800"
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              )
+            )}
+          </div>
         </div>
       )}
     </>
   );
 };
 
-export default Custom15;
+export default MyUrls;
