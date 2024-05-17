@@ -1,9 +1,11 @@
-import React from 'react'
+import AddUrl from "../components/Addurl";
 
 const Home = () => {
   return (
-    <div>Home</div>
-  )
-}
+    <div>
+      <AddUrl />
+    </div>
+  );
+};
 
-export default Home
+export default Home;
