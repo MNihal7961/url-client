@@ -46,8 +46,6 @@ const Login = () => {
 
       const data = res.data;
 
-      console.log(data);
-
       if (res.status === 200) {
         dispatch(logInSuccess(data));
         toast.success(data.message);
