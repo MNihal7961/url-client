@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import Loading from "../components/Loading";
 import Empty from "../components/Empty";
+import Swal from "sweetalert2";
 
 const MyUrls = () => {
   const { token } = useSelector((state) => state.user);
@@ -66,7 +67,23 @@ const MyUrls = () => {
     }
   };
 
-  const handleDelete = async (code) => {
+  const handleDelete = (code) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will not be able to recover this URL!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteUrl(code);
+      }
+    });
+  };
+
+  const deleteUrl = async (code) => {
     try {
       const { data } = await axios.put(
         `https://url-server-git-main-nihalms-projects.vercel.app/api/url/${code}`,
@@ -88,10 +105,10 @@ const MyUrls = () => {
 
   return (
     <>
-      {urls.length === 0 && !loading && <Empty/>}
+      {urls.length === 0 && !loading && <Empty />}
       {loading && <Loading />}
       {urls.length > 0 && !loading && (
-        <div className="relative min-h-[60vh] overflow-x-auto mt-32">
+        <div className="relative overflow-x-auto mt-32">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
             <thead className="text-xs text-gray-700 uppercase bg-gray-100">
               <tr>

@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 const AddUrl = () => {
   const { currentUser, token } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
+  const [loading1, setLoading1] = useState(false);
   const [formData, setFormData] = useState({
     originalLink: "",
     name: "",
@@ -56,14 +57,58 @@ const AddUrl = () => {
 
       toast.success(data.message);
       navigate("/urls");
+      location.reload();
     } catch (error) {
       console.log(error);
       setLoading(false);
       toast.error(error.response.data.message);
     }
   };
+  const handle15 = async () => {
+    try {
+      setLoading1(true);
+      axios.defaults.withCredentials = true;
+      const { data } = await axios.get(
+        "https://url-server-git-main-nihalms-projects.vercel.app/api/custom",
+        {
+          headers: {
+            Authorization: token,
+          },
+          withCredentials: true,
+        }
+      );
+
+      setLoading1(false);
+
+      toast.success(data.message);
+      navigate("/custom");
+    } catch (error) {
+      console.log(error);
+      setLoading1(false);
+      toast.error(error.response.data.message);
+    }
+  };
   return (
-    <section className="px-5 lg:px-0 mt-32 md:mt-24 h-[60vh] md:h-auto">
+    <section className="px-5 lg:px-0 mt-32 md:mt-24 md:h-auto">
+      <div className="p-5 flex items-center justify-center">
+        <button
+          disabled={loading1}
+          onClick={handle15}
+          className="p-3 bg-gray-300 w-1/2 rounded-md font-semibold hover:cursor-pointer"
+        >
+          {loading1 ? (
+            <>
+              <div className="text-center">
+                <HashLoader size={20} /> loading
+              </div>
+            </>
+          ) : (
+            <>
+              Add <span className="text-primaryColor">15 url</span>
+            </>
+          )}
+        </button>
+      </div>
       <div className="w-full max-w-[800px] mx-auto rounded-lg shadow-md md:p-10">
         <div className="flex items-center justify-center">
           <h3 className="text-headingColor text-[22px] leading-9 font-bold mb-10">

@@ -8,7 +8,7 @@ import Empty15 from "../components/Empty15";
 
 const MyUrls = () => {
   const { token } = useSelector((state) => state.user);
-  const [urls, setUrls] = useState([[{}]]);
+  const [urls, setUrls] = useState([]);
   const [loading, setLoading] = useState(false);
 
   axios.defaults.withCredentials = true;
@@ -25,10 +25,7 @@ const MyUrls = () => {
           withCredentials: true,
         }
       );
-      if (response) {
-        setLoading(false);
-      }
-      console.log(response.data.data);
+      setLoading(false);
       setUrls(response.data.data);
     } catch (error) {
       setLoading(false);
@@ -43,7 +40,7 @@ const MyUrls = () => {
   const handleDelete = async (code) => {
     try {
       const { data } = await axios.put(
-        `https://url-server-git-main-nihalms-projects.vercel.app/api/custom/remove1/${code}`,
+        `https://url-server-git-main-nihalms-projects.vercel.app/api/custom/${code}`,
         {},
         {
           headers: {
@@ -62,50 +59,49 @@ const MyUrls = () => {
 
   return (
     <>
-      {urls.length === 0 && !loading && <Empty15 />}
-      {loading && <Loading />}
-      {urls.length > 0 && !loading && (
-        <>
-          <div className="relative min-h-[60vh] overflow-x-auto mt-32 -z-10">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-100">
-                <tr>
-                  <th scope="col" className="px-6 py-3">
-                    NO
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    URL
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    CODE
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    DELETE URL
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {urls.flat().map((url, index) => (
-                  <tr key={index}>
-                    <td className="px-6 py-4">{index + 1}</td>
-                    <td className="px-6 py-4 hover:text-blue-600 cursor-pointer">
-                      <span style={{ whiteSpace: "pre-wrap" }}>{url.url}</span>
-                    </td>
-                    <td className="px-6 py-4">{url.code}</td>
-                    <td className="px-6 py-4">
-                      <MdDelete
-                        onClick={() => handleDelete(url.code)}
-                        className="text-red-600 cursor-pointer"
-                        size={30}
-                      />
-                    </td>
-                  </tr>
+      <div className="mt-32 px-10">
+        {urls.length === 0 && !loading && <Empty15 />}
+        {loading && <Loading />}
+        {urls.length > 0 && !loading && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {urls.map((url, index) => (
+              <div
+                key={index}
+                className="max-w-md bg-white border border-gray-200 rounded-lg shadow p-4"
+              >
+                <h5 className="text-xl font-bold text-center leading-none text-gray-900 mb-4">
+                  {index + 1}
+                </h5>
+                {url.map((item, idx) => (
+                  <div className="flex items-center" key={idx}>
+                    {" "}
+                    {/* Add key={idx} here */}
+                    <div>{idx + 1}</div>
+                    <div className="ml-4">
+                      <p className="text-sm font-medium text-gray-900 truncate">
+                        code: {item.code}
+                      </p>
+                      <p className="text-sm text-gray-500 truncate">
+                        {" "}
+                        url: {item.url}
+                      </p>
+                    </div>
+                  </div>
                 ))}
-              </tbody>
-            </table>
+
+                <div className="flex justify-end mt-4">
+                  <MdDelete
+                    key={index}
+                    onClick={() => handleDelete(url[0].code)}
+                    className="text-red-600 cursor-pointer"
+                    size={24}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
-        </>
-      )}
+        )}
+      </div>
     </>
   );
 };
