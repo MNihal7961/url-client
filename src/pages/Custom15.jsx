@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { MdDelete } from "react-icons/md";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import Loading from "../components/Loading";
 import Empty15 from "../components/Empty15";
+import Swal from "sweetalert2";
 
 const MyUrls = () => {
   const { token } = useSelector((state) => state.user);
@@ -37,7 +38,23 @@ const MyUrls = () => {
     fetchUrls();
   }, []);
 
-  const handleDelete = async (code) => {
+  const handleDelete = (code) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will not be able to recover this URL!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteUrl(code);
+      }
+    });
+  };
+
+  const deleteUrl = async (code) => {
     try {
       const { data } = await axios.put(
         `https://url-server-git-main-nihalms-projects.vercel.app/api/custom/${code}`,
@@ -74,15 +91,12 @@ const MyUrls = () => {
                 </h5>
                 {url.map((item, idx) => (
                   <div className="flex items-center" key={idx}>
-                    {" "}
-                    {/* Add key={idx} here */}
                     <div>{idx + 1}</div>
                     <div className="ml-4">
                       <p className="text-sm font-medium text-gray-900 truncate">
                         code: {item.code}
                       </p>
                       <p className="text-sm text-gray-500 truncate">
-                        {" "}
                         url: {item.url}
                       </p>
                     </div>
@@ -91,7 +105,6 @@ const MyUrls = () => {
 
                 <div className="flex justify-end mt-4">
                   <MdDelete
-                    key={index}
                     onClick={() => handleDelete(url[0].code)}
                     className="text-red-600 cursor-pointer"
                     size={24}
