@@ -10,7 +10,7 @@ const Routers = () => {
   const { currentUser } = useSelector((state) => state.user);
   return (
     <Routes>
-      <Route path="/" element={currentUser ? <Home /> : <Login />} />
+      <Route path="/" element={<Home />} />
       <Route path="/login" element={currentUser ? <Home /> : <Login />} />
       <Route path="/signup" element={currentUser ? <Home /> : <Signup />} />
       <Route path="/urls" element={currentUser ? <MyUrls /> : <Login />} />

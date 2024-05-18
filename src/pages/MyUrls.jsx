@@ -69,7 +69,8 @@ const MyUrls = () => {
   const handleDelete = async (code) => {
     try {
       const { data } = await axios.put(
-        `http://localhost:4000/api/url/${code}`,
+        `https://url-server-git-main-nihalms-projects.vercel.app/api/url/${code}`,
+        {},
         {
           headers: {
             Authorization: token,
@@ -87,7 +88,7 @@ const MyUrls = () => {
 
   return (
     <>
-      {urls.length === 0 && !loading && <Empty />}
+      {urls.length === 0 && !loading && <Empty/>}
       {loading && <Loading />}
       {urls.length > 0 && !loading && (
         <div className="relative min-h-[60vh] overflow-x-auto mt-32">

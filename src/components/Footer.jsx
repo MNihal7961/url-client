@@ -2,7 +2,7 @@ import { FaLink } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-white rounded-lg m-10">
+    <footer className="bg-white rounded-lg mt-52">
       <div className="w-full max-w-screen-xl mx-auto">
         <div className="sm:flex sm:items-center sm:justify-between">
           <a
